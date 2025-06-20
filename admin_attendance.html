@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin Attendance - E-Restore Leatherworks</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <!-- FullCalendar Core + DayGrid Plugin -->
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    body, html {
+      height: 100%;
+      background: linear-gradient(rgba(0, 0, 0, 0.9), #ffffff9a, rgba(109, 20, 20, 0.9)), url('bg.png') no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    header {
+      background-color: #800000;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .logo-container img {
+      height: 80px;
+      width: auto;
+    }
+
+    .logo-container h1 {
+      font-size: 2rem;
+      font-weight: 700;
+    }
+
+    .branch-name {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-left: 0.10rem;
+      color: #ffffff;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .nav-buttons a {
+      background-color: #ffffff;
+      color: #800000;
+      padding: 0.6rem 1.3rem;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .nav-buttons a:hover {
+      background: linear-gradient(135deg, #f55a1d 0%, #f5c21d 100%);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .main-content {
+      padding: 3rem;
+    }
+
+    .content-flex {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: center;
+    }
+
+    .content-box {
+      background-color: #ffffff;
+      padding: 2rem;
+      border-radius: 2rem;
+      box-shadow: 0 8px 30px rgba(44, 12, 0, 0.3);
+      flex: 1;
+      min-width: 700px;
+    }
+
+    .calendar-box {
+      background-color: #fff;
+      padding: 1rem;
+      border-radius: 1rem;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      flex: 1;
+      min-width: 350px;
+      max-width: 500px;
+    }
+
+    #calendar {
+      width: 100%;
+      height: 500px;
+      min-height: 500px;
+      background-color: #fff;
+      color: black;
+    }
+
+    h2 {
+      text-align: center;
+      color: #800000;
+      margin-bottom: 1.5rem;
+    }
+
+    .action-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+
+    button {
+      background-color: #800000;
+      color: white;
+      padding: 0.7rem 1.2rem;
+      border: none;
+      border-radius: 1rem;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    button:hover {
+      background-color: #660303;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.5rem;
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 0.5rem;
+      text-align: center;
+    }
+
+    .summary {
+      text-align: center;
+      margin-top: 1rem;
+      font-weight: 600;
+    }
+   
+    /* FullCalendar Event Styling */
+.fc .fc-daygrid-event {
+  border-radius: 8px;
+  padding: 2px 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease;
+}
+
+.fc .fc-daygrid-event:hover {
+  transform: scale(1.03);
+  cursor: pointer;
+}
+
+.fc .fc-toolbar-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #800000;
+}
+
+.fc .fc-button {
+  background-color: #800000;
+  border: none;
+  font-weight: 600;
+  border-radius: 6px;
+  padding: 6px 12px;
+  transition: background-color 0.3s ease;
+}
+
+.fc .fc-button:hover {
+  background-color: #660000;
+}
+
+.fc .fc-button-primary:not(:disabled):active,
+.fc .fc-button-primary:not(:disabled).fc-button-active {
+  background-color: #a52a2a;
+}
+
+.fc .fc-daygrid-day-number {
+  font-weight: 600;
+  color: #333;
+}
+
+.fc .fc-daygrid-day.fc-day-today {
+  background-color: #fff7f0;
+}
+
+    @media print {
+      .action-buttons, header, .calendar-box {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo-container">
+      <img src="logo.png" alt="ERestore Logo" />
+      <h1>ERestore Leatherworks <span class="branch-name">| Admin</span></h1>
+    </div>
+    <nav class="nav-buttons">
+      <a href="admin.html">Home</a>
+      <a href="admin_announcement.html">Announcements</a>
+      <a href="admin_report.html">Reports</a>
+      <a href="admin_appointment.html">Appointments</a>
+      <a href="admin_customerlist.html">Customers</a>
+      <a href="admin_attendance.html">Attendance</a>
+    </nav>
+  </header>
+
+  <div class="main-content">
+    <div class="content-flex">
+      <div class="content-box">
+        <h2>Admin Attendance Overview</h2>
+        <div style="margin-bottom: 1rem; text-align: center;">
+          <label for="branchSelect">Branch:</label>
+          <select id="branchSelect" onchange="filterTable()">
+            <option value="">All Branches</option>
+            <option value="Bacolod">Bacolod</option>
+            <option value="Abreeza">Abreeza</option>
+            <option value="Cagayan de Oro">Cagayan de Oro</option>
+            <option value="Greenhills">Greenhills</option>
+            <option value="General Santos">General Santos</option>
+            <option value="Lanang">SM Lanang</option>
+          </select>
+          <label for="datePicker" style="margin-left: 1rem;">Date:</label>
+          <input type="date" id="datePicker" onchange="filterTable()" />
+          <br><br>
+          <input type="text" id="searchInput" placeholder="Search by employee or time" oninput="filterTable()" style="padding: 0.5rem; border-radius: 0.5rem; width: 60%;" />
+        </div>
+
+        <div class="action-buttons">
+          <button onclick="window.print()">Print</button>
+        </div>
+
+        <table id="attendanceTable">
+          <thead>
+            <tr>
+              <th>Branch</th>
+              <th>Date</th>
+              <th>Employee Name</th>
+              <th>Time In</th>
+              <th>Time Out</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+
+        <div class="summary" id="summary"></div>
+      </div>
+
+      <div class="calendar-box">
+        <h2 style="text-align:center; margin-bottom: 1rem;">Attendance Calendar</h2>
+        <div id="calendar" style="border: 1px solid #ccc; border-radius: 1rem; padding: 0.5rem;"></div>
+        <div style="margin-top: 1rem; font-size: 0.9rem; text-align: center;">
+          <strong>Branch Color Legend:</strong><br>
+          <span style="color:#d32f2f;">■ Greenhills</span> &nbsp;
+          <span style="color:#388e3c;">■ Abreeza</span> &nbsp;
+          <span style="color:#1976d2;">■ Bacolod</span> &nbsp;
+          <span style="color:#fbc02d;">■ Cagayan de Oro</span> &nbsp;
+          <span style="color:#7b1fa2;">■ General Santos</span> &nbsp;
+          <span style="color:#ff5722;">■ Lanang</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const branchColors = {
+      'Greenhills': '#d32f2f',
+      'Abreeza': '#388e3c',
+      'Bacolod': '#1976d2',
+      'Cagayan de Oro': '#fbc02d',
+      'General Santos': '#7b1fa2',
+      'Lanang': '#ff5722'
+    };
+
+    let allRecords = [];
+
+    const branchMap = {
+      'gh_attendanceRecords': 'Greenhills',
+      'abreeza_attendanceRecords': 'Abreeza',
+      'bcd_attendanceRecords': 'Bacolod',
+      'cdo_attendanceRecords': 'Cagayan de Oro',
+      'gensan_attendanceRecords': 'General Santos',
+      'lanang_attendanceRecords': 'Lanang'
+    };
+
+    let calendar;
+
+    function loadAttendanceData() {
+      allRecords = [];
+
+      const sampleDataIfEmpty = {
+        'gh_attendanceRecords': [{
+          name: 'Juan Dela Cruz',
+          date: new Date().toISOString().split('T')[0],
+          timeIn: '08:00 AM',
+          timeOut: '05:00 PM'
+        }]
+      };
+
+      for (const key in branchMap) {
+        let data = JSON.parse(localStorage.getItem(key) || '[]');
+
+        if (data.length === 0 && sampleDataIfEmpty[key]) {
+          data = sampleDataIfEmpty[key];
+          localStorage.setItem(key, JSON.stringify(data));
+        }
+
+        data.forEach(record => {
+          allRecords.push({ ...record, branch: branchMap[key] });
+        });
+      }
+
+      renderTable(allRecords);
+      loadCalendarEvents();
+    }
+
+    function renderTable(data) {
+      const tbody = document.querySelector('#attendanceTable tbody');
+      tbody.innerHTML = '';
+      data.forEach(record => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${record.branch}</td>
+          <td>${record.date}</td>
+          <td>${record.name}</td>
+          <td>${record.timeIn || '-'}</td>
+          <td>${record.timeOut || '-'}</td>
+        `;
+        tbody.appendChild(row);
+      });
+      const present = data.filter(r => r.timeIn || r.timeOut).length;
+      const absent = data.length - present;
+      document.getElementById('summary').textContent = `Total Present: ${present} | Total Absent: ${absent}`;
+    }
+
+    function filterTable() {
+      const searchValue = document.getElementById('searchInput').value.toLowerCase();
+      const selectedBranch = document.getElementById('branchSelect').value;
+      const selectedDate = document.getElementById('datePicker').value;
+      const filtered = allRecords.filter(record =>
+        (selectedBranch === '' || record.branch === selectedBranch) &&
+        (selectedDate === '' || record.date === selectedDate) &&
+        (
+          record.name.toLowerCase().includes(searchValue) ||
+          (record.timeIn && record.timeIn.includes(searchValue)) ||
+          (record.timeOut && record.timeOut.includes(searchValue))
+        )
+      );
+      renderTable(filtered);
+    }
+
+    function loadCalendarEvents() {
+      if (!calendar) return;
+
+      const attendanceEvents = allRecords.map(record => {
+        if (!record.timeIn && !record.timeOut) return null;
+
+        return {
+          title: `✔ ${record.name} (${record.branch})`,
+          start: record.date,
+          allDay: true,
+          backgroundColor: branchColors[record.branch] || '#888',
+          borderColor: branchColors[record.branch] || '#888',
+          textColor: '#fff'
+        };
+      }).filter(e => e !== null);
+
+      calendar.removeAllEvents();
+      calendar.addEventSource(attendanceEvents);
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const calendarEl = document.getElementById('calendar');
+      calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        height: 500,
+        selectable: true,
+        editable: true,
+        headerToolbar: {
+          left: 'prev,next today',
+          center: 'title',
+          right: 'dayGridMonth,listWeek'
+        },
+        dateClick: function(info) {
+          const title = prompt('Enter event title (or leave blank to just filter table)');
+          if (title) {
+            calendar.addEvent({
+              title: `📝 ${title}`,
+              start: info.dateStr,
+              allDay: true
+            });
+          }
+          document.getElementById('datePicker').value = info.dateStr;
+          filterTable();
+        },
+        eventClick: function(info) {
+          alert(`Event: ${info.event.title}\nDate: ${info.event.startStr}`);
+        }
+      });
+      calendar.render();
+      loadAttendanceData();
+    });
+  </script>
+</body>
+</html>

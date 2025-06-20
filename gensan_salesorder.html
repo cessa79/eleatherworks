@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sales Orders - General Santos </title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    body, html {
+      height: 100%;
+      background:
+        linear-gradient(rgba(0, 0, 0, 0.9), #ffffff9a, rgba(109, 20, 20, 0.9)),
+        url('bg.png') no-repeat center center fixed;
+      background-size: cover;
+    }
+    header {
+      background-color: #800000;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+    .logo-container img {
+      height: 80px;
+      width: auto;
+    }
+    .logo-container h1 {
+      font-size: 2rem;
+      font-weight: 700;
+    }
+    .branch-name {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-left: 0.10rem;
+      color: #ffffff;
+    }
+    .main-content {
+      padding: 3rem;
+    }
+    .content-box {
+      background-color: white;
+      padding: 2rem;
+      border-radius: 2rem;
+      box-shadow: 0 8px 30px rgba(44, 12, 0, 0.3);
+      max-width: 2200px;
+      margin: auto;
+    }
+    .nav-buttons {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+    .nav-buttons a {
+      background-color: #ffffff;
+      color: #800000;
+      padding: 0.6rem 1.3rem;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .nav-buttons a:hover {
+      background: linear-gradient(135deg, #f55a1d 0%, #f5c21d 100%);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+    h2 {
+      text-align: center;
+      color: #800000;
+      margin-bottom: 1.5rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.5rem;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 0.5rem;
+      text-align: center;
+      vertical-align: top;
+      word-wrap: break-word;
+    }
+    td:last-child {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      max-width: 300px;
+    }
+    button {
+      background-color: #800000;
+      color: white;
+      padding: 0.7rem 1.2rem;
+      border: none;
+      border-radius: 1rem;
+      margin: 0.5rem;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    button:hover {
+      background-color: #500303;
+    }
+    
+    @media print {
+  body, html {
+    background: white !important;
+    color: black;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    font-size: 10pt;
+    padding: 1cm;
+  }
+
+  header,
+  .nav-buttons,
+  .action-buttons,
+  .view-images-btn,
+  #imageModal,
+  button {
+    display: none !important;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    font-size: 9pt;
+    table-layout: fixed;
+  }
+
+  th {
+    background-color: #f0f0f0;
+    font-weight: bold;
+    border: 1px solid #000;
+    padding: 6px;
+    text-align: center;
+  }
+
+  td {
+    border: 1px solid #000;
+    padding: 6px;
+    text-align: center;
+    vertical-align: top;
+    word-wrap: break-word;
+  }
+
+  #salesOrdersTable th:nth-child(12),
+  #salesOrdersTable td:nth-child(12) {
+    display: none !important;
+  }
+
+  h2 {
+    color: #000;
+    font-size: 1.1rem;
+    text-align: center;
+    margin-bottom: 0.5rem;
+  }
+
+  #totalSales {
+    margin-top: 1rem;
+    font-weight: bold;
+    font-size: 10pt;
+    text-align: right;
+    color: black !important;
+  }
+
+  .content-box {
+    box-shadow: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .main-content {
+    padding: 0;
+  }
+
+  @page {
+    margin: 1cm;
+    size: A4 portrait;
+  }
+}
+
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo-container">
+      <img src="logo.png" alt="ERestore Logo" />
+      <h1>ERestore Leatherworks <span class="branch-name">| SM General Santos</span></h1>
+    </div>
+    <nav class="nav-buttons">
+      <a href="gensan.html">Homepage</a>
+      <a href="gensan_announcement.html">Announcements</a>
+      <a href="gensan_report.html">Reports</a>
+      <a href="gensan_appointment.html">Appointments</a>
+      <a href="gensan_customerlist.html">Customers</a>
+      <a href="gensan_attendance.html">Attendance</a>
+    </nav>
+  </header>
+
+  <div class="main-content">
+    <div class="content-box">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem;">
+  <input type="text" id="searchInput" placeholder="Search Job Order #"
+    style="padding: 0.6rem 1rem; border-radius: 1rem; border: 1px solid #ccc; font-size: 0.9rem; max-width: 300px;" />
+
+  <select id="timeFilter" style="padding: 0.6rem 1rem; border-radius: 1rem; border: 1px solid #ccc; font-size: 0.9rem; max-width: 200px;">
+    <option value="all">All Time</option>
+    <option value="day">Today</option>
+    <option value="week">This Week</option>
+    <option value="month">This Month</option>
+    <option value="year">This Year</option>
+  </select>
+</div>
+
+
+      <h2>Sales Order List</h2>
+      <div class="action-buttons">
+        <button onclick="window.print()"> Print</button>
+        <button onclick="exportToCSV()"> Export to CSV</button>
+      </div>
+      <table id="salesOrdersTable">
+        <thead>
+          <tr>
+            <th>Order #</th>
+            <th>Date</th>
+            <th>Customer</th>
+            <th>Contact</th>
+            <th>Email</th>
+            <th>Receiver</th>
+            <th>Repairman</th>
+            <th>Payment</th>
+            <th>Balance</th>
+            <th>Completion</th>
+            <th>Items</th>
+            <th>Images</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <p id="totalSales" style="font-size: 1rem; font-weight: bold; color: #800000; margin-top: 1rem;">Total Sales: ₱0.00</p>
+
+    </div>
+  </div>
+
+  <div id="imageModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.85); z-index:9999; justify-content:center; align-items:center; flex-wrap:wrap; gap:1rem; padding:2rem;"></div>
+
+<script>
+  function showImages(imageList) {
+    const modal = document.getElementById('imageModal');
+    modal.innerHTML = '<button onclick="document.getElementById(\'imageModal\').style.display=\'none\'" style="position:absolute; top:1rem; right:1rem; background:white; border:none; padding:0.5rem 1rem; font-weight:bold; cursor:pointer;">Close</button>';
+    imageList.forEach(src => {
+      const img = document.createElement('img');
+      img.src = src;
+      img.style.maxWidth = '300px';
+      img.style.maxHeight = '300px';
+      img.style.border = '2px solid white';
+      img.style.borderRadius = '1rem';
+      modal.appendChild(img);
+    });
+    modal.style.display = 'flex';
+  }
+
+  function loadSalesOrders(filter = '') {
+    const tableBody = document.querySelector('#salesOrdersTable tbody');
+    const orders = JSON.parse(localStorage.getItem('gensan_salesOrders') || '[]');
+    const timeFilter = document.getElementById('timeFilter').value;
+    const now = new Date();
+
+    const filteredOrders = orders.filter(order => {
+       const isGensan = order.branch === "General Santos";
+      const matchJobOrder = order.jobOrderNumber.toLowerCase().includes(filter.toLowerCase());
+      const orderDate = new Date(order.dateBooked);
+
+      let matchTime = true;
+      if (timeFilter === 'day') {
+        matchTime = orderDate.toDateString() === now.toDateString();
+      } else if (timeFilter === 'week') {
+        const startOfWeek = new Date(now);
+        startOfWeek.setDate(now.getDate() - now.getDay());
+        startOfWeek.setHours(0, 0, 0, 0);
+        const endOfWeek = new Date(startOfWeek);
+        endOfWeek.setDate(startOfWeek.getDate() + 6);
+        matchTime = orderDate >= startOfWeek && orderDate <= endOfWeek;
+      } else if (timeFilter === 'month') {
+        matchTime = orderDate.getMonth() === now.getMonth() && orderDate.getFullYear() === now.getFullYear();
+      } else if (timeFilter === 'year') {
+        matchTime = orderDate.getFullYear() === now.getFullYear();
+      }
+
+      return isGensan && matchJobOrder && matchTime;
+    });
+
+    tableBody.innerHTML = '';
+    let totalSales = 0;
+
+    filteredOrders.forEach(order => {
+      const items = order.items.map(i =>
+        `• ${i.quantity}x ${i.name} (${i.brand || 'No brand'})${i.remarks ? ' - ' + i.remarks : ''}`
+      ).join('\n');
+
+      totalSales += parseFloat(order.balance) || 0;
+
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${order.jobOrderNumber}</td>
+        <td>${order.dateBooked}</td>
+        <td>${order.customerName}</td>
+        <td>${order.contactNumber}</td>
+        <td>${order.email || '—'}</td>
+        <td>${order.receiver}</td>
+        <td>${[...new Set(order.items.map(i => i.repairman))].join(', ')}</td>
+        <td>${order.paymentMode}</td>
+        <td>₱${order.balance}</td>
+        <td>${order.completionDate}</td>
+        <td style="white-space: pre-wrap; text-align: left">${items}</td>
+        <td>${order.images?.length ? `<button class='view-images-btn' onclick='showImages(${JSON.stringify(order.images)})'>View Images</button>` : ''}</td>
+      `;
+      tableBody.appendChild(row);
+    });
+
+    document.getElementById('totalSales').textContent = `Total Sales: ₱${totalSales.toFixed(2)}`;
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    loadSalesOrders();
+
+    document.getElementById('searchInput').addEventListener('input', function () {
+      loadSalesOrders(this.value);
+    });
+
+    document.getElementById('timeFilter').addEventListener('change', function () {
+      loadSalesOrders(document.getElementById('searchInput').value);
+    });
+  });
+</script>
+</body>
+</html>

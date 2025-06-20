@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ERestore Leatherworks - Branch Login</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      background:
+        linear-gradient(rgba(0, 0, 0, 0.9), #ffffff9a, rgba(109, 20, 20, 0.9)),
+        url('bg.png') no-repeat center center fixed;
+      background-size: cover;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 2rem 3rem;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      max-width: 400px;
+      width: 100%;
+    }
+
+    h1 {
+      color: #800000;
+      margin-bottom: 1.5rem;
+    }
+
+    input, button {
+      width: 100%;
+      padding: 0.75rem;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 2px solid #800000;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #800000;
+      color: white;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #580101;
+    }
+
+    .error {
+      color: red;
+      display: none;
+      margin-top: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>ERestore Leatherworks</h1>
+    <label for="branchInput" class="sr-only" aria-label="Branch Name"></label>
+    <input type="text" id="branchInput" placeholder="Enter Branch Name..." autocomplete="off" />
+
+    <label for="branchPassword" class="sr-only" aria-label="Branch Password"></label>
+    <input type="password" id="branchPassword" placeholder="Enter Password..." autocomplete="off" />
+
+    <button type="button" onclick="loginBranch()">Enter Branch</button>
+    <div class="error" id="errorMsg" role="alert">Invalid branch or password.</div>
+  </div>
+
+  <script defer>
+    const branches = {
+      "gh": { password: "gh123", page: "gh.html" },
+      "bcd": { password: "b1pass", page: "bcd.html" },
+      "lanang": { password: "smpass", page: "lanang.html" },
+      "cdo": { password: "cdo123", page: "cdo.html" },
+      "general santos": { password: "gensan123", page: "gensan.html" },
+      "abreeza": { password: "abpass", page: "abreeza.html" },
+      "admin": { password: "adm123", page: "admin.html" }
+    };
+
+    function loginBranch() {
+      const branch = document.getElementById("branchInput").value.trim().toLowerCase();
+      const pass = document.getElementById("branchPassword").value;
+      const error = document.getElementById("errorMsg");
+
+      if (branches[branch] && branches[branch].password === pass) {
+        localStorage.setItem("loggedInBranch", branch);
+        window.location.href = branches[branch].page;
+      } else {
+        error.style.display = "block";
+      }
+    }
+  </script>
+</body>
+</html>

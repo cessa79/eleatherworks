@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Customer List - Bacolod </title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+ <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    body, html {
+      height: 100%;
+      background:
+        linear-gradient(rgba(0, 0, 0, 0.9), #ffffff9a, rgba(109, 20, 20, 0.9)),
+        url('bg.png') no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    header {
+      background-color: #800000;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .logo-container img {
+      height: 80px;
+      width: auto;
+    }
+
+    .logo-container h1 {
+      font-size: 2rem;
+      font-weight: 700;
+    }
+
+    .branch-name {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-left: 0.10rem;
+      color: #ffffff;
+    }
+
+    .main-content {
+      padding: 3rem;
+    }
+
+    .content-box {
+      background-color: white;
+      padding: 2rem;
+      border-radius: 2rem;
+      box-shadow: 0 8px 30px rgba(44, 12, 0, 0.3);
+      max-width: 1000px;
+      margin: auto;
+    }
+
+   .nav-buttons {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .nav-buttons a {
+      background-color: #ffffff;
+      color: #800000;
+      padding: 0.6rem 1.3rem;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+   .nav-buttons a:hover {
+      background: linear-gradient(135deg, #f55a1d 0%, #f5c21d 100%);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    h2 {
+      text-align: center;
+      color: #800000;
+      margin-bottom: 1.5rem;
+    }
+
+    .search-container {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .search-container input {
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      border-radius: 20px;
+      border: 1px solid #ccc;
+      width: 60%;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.5rem;
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 0.5rem;
+      text-align: center;
+    }
+
+    .action-buttons {
+      text-align: center;
+    }
+
+    button {
+      background-color: #800000;
+      color: white;
+      padding: 0.7rem 1.2rem;
+      border: none;
+      border-radius: 1rem;
+      margin: 0.5rem;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    button:hover {
+      background-color: #660303;
+    }
+
+    @media print {
+      .action-buttons, header, .search-container {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo-container">
+      <img src="logo.png" alt="E-Restore Logo" />
+      <h1>E-Restore Leatherworks <span class="branch-name">|  Bacolod</span></h1>
+    </div>
+    <nav class="nav-buttons">
+      <a href="bcd.html">Home</a>
+      <a href="bcd_announcement.html">Announcements</a>
+      <a href="bcd_report.html">Reports</a>
+      <a href="bcd_appointment.html">Appointments</a>
+      <a href="bcd_customerlist.html">Customers</a>
+      <a href="bcd_attendance.html">Attendance</a>
+    </nav>
+  </header>
+
+  <div class="main-content">
+    <div class="content-box">
+      <h2>Customer List</h2>
+      <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search by customer, contact, email, date, or receiver...">
+      </div>
+      <div class="action-buttons">
+        <button onclick="window.print()"> Print</button>
+      </div>
+      <table id="customerTable">
+        <thead>
+          <tr>
+            <th>Customer Name</th>
+            <th>Contact Number</th>
+            <th>Email</th>
+            <th>Date</th>
+            <th>Receiver</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    let allRows = [];
+
+    function loadCustomers() {
+      const orders = JSON.parse(localStorage.getItem('bcd_salesOrders') || '[]');
+      const seen = new Set();
+      allRows = [];
+
+      orders.forEach(order => {
+        const key = order.customerName + order.contactNumber + order.dateBooked + order.receiver + order.email;
+        if (!seen.has(key)) {
+          seen.add(key);
+          allRows.push({
+            name: order.customerName,
+            contact: order.contactNumber,
+            email: order.email || '—',
+            date: order.dateBooked,
+            receiver: order.receiver
+          });
+        }
+      });
+
+      renderTable(allRows);
+    }
+
+    function renderTable(data) {
+      const tableBody = document.querySelector('#customerTable tbody');
+      tableBody.innerHTML = '';
+
+      data.forEach(row => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${row.name}</td>
+          <td>${row.contact}</td>
+          <td>${row.email}</td>
+          <td>${row.date}</td>
+          <td>${row.receiver}</td>
+        `;
+        tableBody.appendChild(tr);
+      });
+    }
+
+    document.getElementById('searchInput').addEventListener('input', function () {
+      const searchValue = this.value.toLowerCase();
+      const filtered = allRows.filter(row =>
+        row.name.toLowerCase().includes(searchValue) ||
+        row.contact.toLowerCase().includes(searchValue) ||
+        row.email.toLowerCase().includes(searchValue) ||
+        row.date.toLowerCase().includes(searchValue) ||
+        row.receiver.toLowerCase().includes(searchValue)
+      );
+      renderTable(filtered);
+    });
+
+    document.addEventListener('DOMContentLoaded', loadCustomers);
+  </script>
+</body>
+</html>

@@ -1,0 +1,945 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>New Sales Order - Abreeza </title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    body, html {
+      height: 100%;
+      background:
+        linear-gradient(rgba(0, 0, 0, 0.9), #ffffff9a, rgba(109, 20, 20, 0.9)),
+        url('bg.png') no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    header {
+      background-color: #800000;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .logo-container img {
+      height: 80px;
+      width: auto;
+    }
+
+    .logo-container h1 {
+      font-size: 2rem;
+      font-weight: 700;
+    }
+
+    .branch-name {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-left: 0.10rem;
+      color: #ffffff;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .nav-buttons a {
+      background-color: #ffffff;
+      color: #800000;
+      padding: 0.6rem 1.3rem;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .nav-buttons a:hover {
+      background: linear-gradient(135deg, #f55a1d 0%, #f5c21d 100%);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .main-content {
+      display: flex;
+      justify-content: space-between;
+      gap: 2rem;
+      padding: 1rem;
+      flex-wrap: wrap;
+      height: calc(100vh - 120px);
+      overflow: hidden;
+    }
+
+    .form-section,
+    .items-section {
+      background-color: rgb(255, 255, 255);
+      padding: 1.5rem;
+      border-radius: 2rem;
+      box-shadow: 0 8px 30px rgba(255, 255, 255, 0.3);
+      flex: 1 1 48%;
+      overflow-y: auto;
+      max-height: 100%;
+    }
+
+    h2 {
+      text-align: center;
+      color: #800000;
+      margin-bottom: 1rem;
+      font-size: 1.4rem;
+    }
+
+    form label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: 600;
+    }
+
+    form input, form select {
+      width: 100%;
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+      border: 1px solid #ccc;
+      margin-top: 0.25rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 0.5rem;
+      text-align: center;
+    }
+
+    table input {
+      width: 100%;
+      border: none;
+      text-align: center;
+      padding: 0.4rem;
+    }
+
+    button {
+      background-color: #800000;
+      color: white;
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 1rem;
+      margin-top: 1rem;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    button:hover {
+      background-color: #500303;
+    }
+
+    .button-group {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    #imagePreviewWrapper {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .waiver-print {
+      display: none;
+    }
+    #imagePreviewWrapper .image-preview img {
+  max-width: 120px;  /* Adjust width as needed */
+  max-height: 120px; /* Adjust height as needed */
+  object-fit: cover; /* Ensures the image fits within the defined size without distortion */
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+
+    @media print {
+      body {
+        margin: 0;
+        padding: 0;
+        background: white !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      header {
+        padding: 0.5rem 1rem;
+        font-size: 10pt;
+        color: white;
+        background-color: #800000;
+        box-shadow: none;
+      }
+
+      .nav-buttons,
+      .button-group,
+      #addItemBtn,
+      .removeBtn,
+      button[type="submit"],
+      #productImages,
+      label[for="productImages"],
+      #imagePreviewWrapper {
+        display: none !important;
+      }
+
+      .main-content {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr;
+        column-gap: 0.5rem;
+        row-gap: 0.3rem;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+      }
+
+      .form-section,
+      .items-section {
+        box-shadow: none;
+        border: none;
+        padding: 0.4rem;
+        margin: 0;
+        max-height: none;
+      }
+
+      .form-section {
+        grid-column: 1/2;
+      }
+
+      .items-section {
+        grid-column: 2/3;
+        page-break-inside: avoid;
+      }
+
+      .form-section label,
+      .form-section input,
+      .form-section select,
+      .items-section table {
+        font-size: 9pt;
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+
+      table th:nth-child(5),
+      table td:nth-child(5) {
+        display: none !important;
+      }
+
+      table th:last-child,
+      table td:last-child {
+        display: none;
+      }
+
+      input[type="number"]::-webkit-outer-spin-button,
+      input[type="number"]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+
+      input {
+        appearance: none;
+        -webkit-appearance: none; /* Chrome, Safari */
+        -moz-appearance: none;    /* Firefox */
+        border: 1px solid #ccc;   /* Add border if needed */
+        background: none;         /* Or set your custom background */
+      }
+
+      footer.waiver-print {
+        display: block !important;
+        font-size: 8pt;
+        margin-top: 1rem;
+        padding-top: 0.5rem;
+        border-top: 1px solid #000;
+        line-height: 1.3;
+        text-align: justify;
+        background: white;
+        page-break-inside: avoid;
+      }
+
+      footer.waiver-print p {
+        margin-bottom: 0.4rem;
+      }
+
+
+
+      @page {
+        size: A4 portrait;
+        margin: 1cm;
+      }
+
+      #ticketPrintSection {
+        font-size: 8pt; /* Reduce the font size */
+        padding: 1rem;
+        margin: 0;
+      }
+
+      #ticketPrintSection .ticket-item {
+        margin-bottom: 10px; /* Reduce space between tickets */
+        padding: 0.5rem; /* Reduced padding */
+        font-size: 8pt;
+      }
+
+      #ticketPrintSection .ticket-item h3 {
+        font-size: 10pt; /* Adjust header size */
+        text-align: center;
+        color: maroon;
+      }
+
+      #ticketPrintSection .ticket-item p {
+        line-height: 1.2;
+      }
+
+      #receiverButton {
+        display: none !important;
+      }
+    }
+
+    .print-only-images {
+      display: none;
+      margin: 1rem 0;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .print-only-images img {
+      max-width: 180px;
+      max-height: 180px;
+      object-fit: cover;
+      border-radius: 0.5rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      margin: 0.3rem;
+    }
+
+   @media print {
+  .print-only-images {
+    display: flex !important;
+    justify-content: center;
+    gap: 1rem;
+    page-break-inside: avoid;
+    margin-top: 1rem;
+  }
+
+  .print-only-images img {
+    max-width: 120px;  /* Reduced size */
+    max-height: 120px; /* Reduced size */
+    object-fit: cover;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    margin: 0.3rem;
+  }
+}
+
+    .printed-remarks-section {
+      display: none;
+      margin-top: 1rem;
+      font-size: 9pt;
+      font-weight: bold;
+      line-height: 1.5;
+      page-break-inside: avoid;
+    }
+
+    @media print {
+      .printed-remarks-section {
+        display: block !important;
+      }
+    }
+    @media print {
+  table th:nth-child(4),
+  table td:nth-child(4) {
+    display: none !important;
+  }
+}
+@media print {
+  table th:nth-child(2),
+  table td:nth-child(2) {
+    display: none !important;
+  }
+}
+
+    #receiver {
+      padding: 0.3rem;
+      width: calc(100% - 130px);
+      border-radius: 0.5rem;
+      border: 1px solid #ccc;
+      margin-top: 0.25rem;
+      display: inline-block;
+      height: 35px;
+    }
+
+    label[for="receiver"] {
+      font-weight: 600;
+      margin-top: 1rem;
+      font-size: 1rem;
+      display: block;
+    }
+
+    #receiverButton {
+      background-color: #800000;
+      color: white;
+      padding: 0.5rem 1.2rem;
+      border: none;
+      border-radius: 1rem;
+      margin-top: 0.25rem;
+      cursor: pointer;
+      font-weight: 600;
+      display: inline-block;
+      vertical-align: top;
+    }
+
+    #receiverButton:hover {
+      background-color: #500303;
+    }
+
+    form input#email {
+      margin-bottom: 1rem;
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 300px;
+      margin: 15% auto;
+      border-radius: 10px;
+    }
+
+    .modal-content input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .modal-content button {
+      width: 100%;
+      padding: 10px;
+      background-color: #800000;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    /* Close Button */
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    
+
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo-container">
+      <img src="logo.png" alt="ERestore Logo" />
+      <h1>ERestore Leatherworks <span class="branch-name">| Abreeza</span></h1>
+    </div>
+    <nav class="nav-buttons">
+      <a href="abreeza.html">Homepage</a>
+      <a href="abreeza_announcement.html">Announcements</a>
+      <a href="abreeza_report.html">Reports</a>
+      <a href="abreeza_appointment.html">Appointments</a>
+      <a href="abreeza_customerlist.html">Customers</a>
+      <a href="abreeza_attendance.html">Attendance</a>
+    </nav>
+  </header>
+
+  <div class="main-content">
+    <div class="form-section">
+      <h2>New Sales Order</h2>
+      <form id="salesOrderForm">
+        <label for="jobOrderNumber">Job Order Number</label>
+        <input type="text" id="jobOrderNumber" readonly />
+
+        <label for="dateBooked">Date Booked</label>
+        <input type="date" id="dateBooked" required />
+
+        <label for="customerName">Customer Name</label>
+        <input type="text" id="customerName" list="customerList" required />
+        <datalist id="customerList"></datalist>
+
+        <label for="contactNumber">Contact Number</label>
+        <input type="tel" id="contactNumber" required />
+
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="example@email.com" />
+
+        <label for="receiver">Receiver</label>
+        <input type="text" id="receiver" readonly required />
+        <button type="button" id="receiverButton">Select Receiver</button>
+
+        <div id="myModal" class="modal">
+          <div class="modal-content">
+            <span class="close">&times;</span>
+            <label for="password">Enter Password</label>
+            <input type="password" id="password" placeholder="Password" required />
+            <button type="button" id="confirmPasswordBtn">Confirm</button>
+          </div>
+        </div>
+
+        <label for="paymentMode">Mode of Payment</label>
+        <select id="paymentMode" required>
+          <option value="" disabled selected>Select payment mode</option>
+          <option value="GCash">GCash</option>
+          <option value="PayMaya">PayMaya</option>
+          <option value="Cash">Cash</option>
+          <option value="Card">Card</option>
+          <option value="Check">Check</option>
+        </select>
+
+        <label for="totalAmount">Total Amount (₱)</label>
+        <input type="number" id="totalAmount" min="0" step="0.01" readonly />
+
+        <label for="balance">Balance (₱)</label>
+        <input type="number" id="balance" min="0" step="0.01" readonly />
+
+        <label for="discount">Less SC/PWD Discount (₱)</label>
+        <input type="number" id="discount" min="0" step="0.01" value="0" />
+
+        <label for="downPayment">Down Payment (₱)</label>
+        <input type="number" id="downPayment" min="0" step="0.01" value="0" />
+
+        <label for="completionDate">Completion Date</label>
+        <input type="date" id="completionDate" />
+
+        <button type="submit">Save Sales Order</button>
+
+        <label for="productImages">Upload Product Photos / Proofs</label>
+        <input type="file" id="productImages" accept="image/*" multiple />
+        <div id="imagePreviewWrapper"></div>
+      </form>
+    </div>
+
+    <div class="items-section">
+      <h2 style="font-size: 1.2rem;">Items</h2>
+      <table id="itemTable">
+        <thead>
+          <tr>
+           <th>Ticket No.</th>
+           <th>Item Description</th>
+            <th>Qty</th>
+            <th>Price</th>
+            <th>Remarks</th> 
+            <th>Repairman Assigned</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><input type="text" name="ticketNo" required /></td>
+            <td><input type="text" name="itemDescription" /></td>
+            <td><input type="number" name="quantity" required /></td>
+            <td><input type="number" name="price" step="0.01" required /></td>
+            <td><input type="text" name="remarks" /></td>
+            <td>
+              <select name="repairman" required>
+                <option value="" disabled selected>Select Repairman</option>
+                <option>Edwin Casoy</option>
+                <option>Priam Gatela</option>
+                <option>Jomer Sol</option>
+                <option>Jett Villanueva</option>
+                <option>Joselito Yude</option>
+                <option>Randy Rubi</option>
+                <option>Benjie Rubi</option>
+                <option>Edgardo Yude Jr.</option>
+                <option>Charlie Carpio</option>
+                <option>Jay Miguel</option>
+                <option>Robert Almodel</option>
+                <option>Winlove Baconga</option>
+                <option>Jerico Casamillo</option>
+                <option>Romel Gutierez</option>
+                <option>Joekim Alcachupas</option>
+              </select>
+            </td>
+            <td><button type="button" onclick="this.closest('tr').remove()">Remove</button></td>
+          </tr>
+        </tbody>
+        <datalist id="brandList">
+          <option value="Louis Vuitton">
+          <option value="Gucci">
+          <option value="Chanel">
+          <option value="Hermès">
+          <option value="Prada">
+          <option value="Balenciaga">
+          <option value="Dior">
+          <option value="Saint Laurent">
+          <option value="Fendi">
+          <option value="Givenchy">
+          <option value="Bottega Veneta">
+          <option value="Versace">
+          <option value="Burberry">
+          <option value="Céline">
+          <option value="Valentino">
+          <option value="Loewe">
+          <option value="Tom Ford">
+          <option value="Salvatore Ferragamo">
+          <option value="Alexander McQueen">
+          <option value="Off-White">
+          <option value="Miu Miu">
+          <option value="Ralph Lauren">
+          <option value="Coach">
+          <option value="Tory Burch">
+          <option value="Michael Kors">
+        </datalist>
+
+        <div id="printedRemarks" class="printed-remarks-section"></div>
+      </table>
+
+      <div class="button-group">
+        <button id="addItemBtn">+ Add Item</button>
+        <button id="printBtn" type="button">Print Receipt</button>
+        <button id="printTicketBtn" type="button">Print Ticket</button>
+      </div>
+
+      <div id="printableImages" class="print-only-images"></div>
+
+      <footer class="waiver-print">
+        <p>
+          I FULLY UNDERSTAND THAT THE CLEANING, RE-COLOR, AND/OR CHANGE COLOR PROCEDURE INVOLVES CERTAIN RISKS TO THE ITEMS TO BE SERVICED, ESPECIALLY DELICATE AND MAN-MADE MATERIALS. THESE INCLUDE A CHANGE IN COLOR, TEXTURE, AND APPEARANCE.
+        </p>
+        <p>
+          I HEREBY RELEASE AND DISCHARGE E.RESTORE LEATHERWORKS FROM ALL LIABILITY, DAMAGE, LOSSES, ARISING FROM THE SERVICE THEY HAVE RENDERED UNTO MY ITEMS.
+        </p>
+        <p>
+          I FULLY ACCEPT AND ASSUME SUCH RISK AND RESPONSIBILITY FOR LOSSES, COST, AND DAMAGE I MAY INCUR THROUGH THE CLEANING, REPAIR, OR RE-COLOR OF THE ITEMS TO BE SERVICED.
+        </p>
+        <p>
+          ☐ I CONSENT TO THE USE OF MY PERSONAL INFORMATION FOR MARKETING PURPOSE
+        </p>
+        <br />
+        <p>____________________________________</p>
+        <p>SIGNATURE OVER PRINTED NAME</p>
+        <p>DATE: ______________________</p>
+      </footer>
+    </div>
+  </div>
+
+  <div id="ticketPrintSection" style="display: none;"></div>
+
+  <script>
+document.addEventListener('DOMContentLoaded', function () {
+  // Receiver Password Modal
+  const receiverButton = document.getElementById('receiverButton');
+  const receiverInput = document.getElementById('receiver');
+  const modal = document.getElementById('myModal');
+  const closeModal = document.querySelector('.close');
+  const confirmPasswordBtn = document.getElementById('confirmPasswordBtn');
+  const passwordInput = document.getElementById('password');
+  const receivers = {
+    Marilyn: "marilyn123", Vivian: "vivian456", Justine: "justine789", Pandanilla: "pandanilla101",
+    Marisol: "marisol123", Rizza: "rizza123", Janette: "janette123", Tintin: "tintin123",
+    Mariel: "mariel123", Chary: "chary123", Red: "red123", Charmagne: "charmagne123",
+    Haika: "haika123", Tricia: "tricia123", GieAnn: "gieanne123", RufaMae: "rufamae123"
+  };
+
+  receiverButton.addEventListener('click', () => modal.style.display = "block");
+  closeModal.addEventListener('click', () => modal.style.display = "none");
+
+  confirmPasswordBtn.addEventListener('click', () => {
+    const enteredPassword = passwordInput.value;
+    for (let receiver in receivers) {
+      if (receivers[receiver] === enteredPassword) {
+        receiverInput.value = receiver;
+        modal.style.display = "none";
+        return;
+      }
+    }
+    alert("Incorrect password. Please try again.");
+  });
+
+  window.onclick = function (event) {
+    if (event.target == modal) modal.style.display = "none";
+  };
+
+  // Item Add/Remove
+  const addItemBtn = document.getElementById('addItemBtn');
+  const itemTableBody = document.querySelector('#itemTable tbody');
+
+  addItemBtn.addEventListener('click', function () {
+    const newRow = document.createElement('tr');
+    newRow.innerHTML = `
+      <td><input type="text" name="item" required /></td>
+      <td><input type="text" name="brand" list="brandList" /></td>
+      <td><input type="number" name="quantity" required /></td>
+      <td><input type="number" name="price" step="0.01" required /></td>
+      <td><input type="text" name="remarks" /></td>
+      <td>
+        <select name="repairman" required>
+          <option value="" disabled selected>Select Repairman</option>
+          <option>Edwin Casoy</option><option>Priam Gatela</option><option>Jomer Sol</option>
+          <option>Jett Villanueva</option><option>Joselito Yude</option><option>Randy Rubi</option>
+          <option>Benjie Rubi</option><option>Edgardo Yude Jr.</option><option>Charlie Carpio</option>
+          <option>Jay Miguel</option><option>Robert Almodel</option><option>Winlove Baconga</option>
+          <option>Jerico Casamillo</option><option>Romel Gutierez</option><option>Joekim Alcachupas</option>
+        </select>
+      </td>
+      <td><button type="button" class="removeBtn">Remove</button></td>
+    `;
+    itemTableBody.appendChild(newRow);
+
+    newRow.querySelector('.removeBtn').addEventListener('click', function () {
+      this.closest('tr').remove();
+      updateBalance();
+    });
+
+    attachInputListeners(newRow);
+  });
+
+  // Balance Calculation
+  function updateBalance() {
+    let total = 0;
+    document.querySelectorAll('#itemTable tbody tr').forEach(row => {
+      const price = parseFloat(row.querySelector('input[name="price"]').value) || 0;
+      const quantity = parseFloat(row.querySelector('input[name="quantity"]').value) || 0;
+      total += price * quantity;
+    });
+
+    const discount = parseFloat(document.getElementById('discount').value) || 0;
+    const downPayment = parseFloat(document.getElementById('downPayment').value) || 0;
+    let finalBalance = total - discount - downPayment;
+    if (finalBalance < 0) finalBalance = 0;
+
+    document.getElementById('totalAmount').value = total.toFixed(2);
+    document.getElementById('balance').value = finalBalance.toFixed(2);
+  }
+
+  function attachInputListeners(row) {
+    row.querySelectorAll('input[name="price"], input[name="quantity"]').forEach(input => {
+      input.addEventListener('input', updateBalance);
+    });
+  }
+
+  document.querySelectorAll('#itemTable tbody tr').forEach(attachInputListeners);
+  document.getElementById('discount').addEventListener('input', updateBalance);
+  document.getElementById('downPayment').addEventListener('input', updateBalance);
+  updateBalance();
+
+  // Image Upload Preview with Delete
+  const imageInput = document.getElementById('productImages');
+  const imagePreviewWrapper = document.getElementById('imagePreviewWrapper');
+  imageInput.addEventListener('change', function (e) {
+    const files = e.target.files;
+    imagePreviewWrapper.innerHTML = '';
+    Array.from(files).forEach((file, index) => {
+      const reader = new FileReader();
+      reader.onload = function (event) {
+        const previewContainer = document.createElement('div');
+        previewContainer.classList.add('image-preview');
+        const imageElement = document.createElement('img');
+        imageElement.src = event.target.result;
+        const deleteBtn = document.createElement('button');
+        deleteBtn.classList.add('delete-btn');
+        deleteBtn.textContent = '×';
+        deleteBtn.addEventListener('click', () => previewContainer.remove());
+        previewContainer.appendChild(imageElement);
+        previewContainer.appendChild(deleteBtn);
+        imagePreviewWrapper.appendChild(previewContainer);
+      };
+      reader.readAsDataURL(file);
+    });
+  });
+
+  // Auto-generate Job Order Number
+  let currentNumber = parseInt(localStorage.getItem('jobOrderCounter') || '0');
+  currentNumber += 1;
+  localStorage.setItem('jobOrderCounter', currentNumber);
+  const formattedNumber = currentNumber.toString().padStart(5, '0');
+  document.getElementById('jobOrderNumber').value = 'JO-' + formattedNumber;
+
+  // FORM SUBMIT (Save & Redirect)
+  document.getElementById('salesOrderForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    for (let row of document.querySelectorAll('#itemTable tbody tr')) {
+  const desc = row.querySelector('input[name="itemDescription"]').value.trim();
+  const repairman = row.querySelector('select[name="repairman"]').value;
+
+  if (!desc || !repairman) {
+    alert("Please complete all item descriptions and select a repairman.");
+    return;
+  }
+}
+
+    const items = [];
+    document.querySelectorAll('#itemTable tbody tr').forEach(row => {
+      items.push({
+  ticketNo: row.querySelector('input[name="ticketNo"]').value,
+  itemDescription: row.querySelector('input[name="itemDescription"]').value,
+        quantity: row.querySelector('input[name="quantity"]').value,
+        price: row.querySelector('input[name="price"]').value,
+        remarks: row.querySelector('input[name="remarks"]').value,
+        repairman: row.querySelector('select[name="repairman"]').value,
+      });
+    });
+
+    const imageBase64List = Array.from(document.querySelectorAll('#imagePreviewWrapper img')).map(img => img.src);
+
+    const order = {
+      jobOrderNumber: document.getElementById('jobOrderNumber').value,
+      dateBooked: document.getElementById('dateBooked').value,
+      customerName: document.getElementById('customerName').value,
+      contactNumber: document.getElementById('contactNumber').value,
+      email: document.getElementById('email').value,
+      receiver: document.getElementById('receiver').value,
+      paymentMode: document.getElementById('paymentMode').value,
+      balance: parseFloat(document.getElementById('balance').value || 0).toFixed(2),
+      discount: parseFloat(document.getElementById('discount').value || 0).toFixed(2),
+      downPayment: parseFloat(document.getElementById('downPayment').value || 0).toFixed(2),
+      completionDate: document.getElementById('completionDate').value,
+      branch: "Abreeza",
+      items: items,
+      images: imageBase64List
+    };
+
+    const salesOrders = JSON.parse(localStorage.getItem('abreeza_salesOrders') || '[]');
+    salesOrders.push(order);
+    localStorage.setItem('abreeza_salesOrders', JSON.stringify(salesOrders));
+
+    alert('Sales Order has been saved!');
+    window.location.href = 'abreeza_salesorder.html';
+  });
+
+  // Print Receipt
+  document.getElementById('printBtn').addEventListener('click', () => {
+    const printContainer = document.getElementById('printableImages');
+    printContainer.innerHTML = '';
+    document.querySelectorAll('#imagePreviewWrapper img').forEach(img => {
+      const clone = img.cloneNode(true);
+      clone.removeAttribute('onclick');
+      printContainer.appendChild(clone);
+    });
+
+    const printedRemarks = document.getElementById('printedRemarks');
+    printedRemarks.innerHTML = '<h4 style="margin-bottom: 0.5rem;">Remarks:</h4>';
+    const rows = document.querySelectorAll('#itemTable tbody tr');
+    rows.forEach((row, index) => {
+     const ticketNo = row.querySelector('input[name="ticketNo"]').value || `#${index + 1}`;
+const itemDescription = row.querySelector('input[name="itemDescription"]').value || 'N/A';
+      const price = parseFloat(row.querySelector('input[name="price"]').value || '0');
+      const qty = parseFloat(row.querySelector('input[name="quantity"]').value || '1');
+      const total = (price * qty).toFixed(2);
+      const p = document.createElement('p');
+      p.textContent = `Ticket No: ${ticketNo} | Description: ${itemDescription} |Qty: ${qty} | Total: ₱${total}`;
+      printedRemarks.appendChild(p);
+    });
+
+    window.print();
+  });
+
+  // Print Ticket
+  document.getElementById('printTicketBtn').addEventListener('click', () => {
+    const ticketSection = document.getElementById('ticketPrintSection');
+    const jobOrder = document.getElementById('jobOrderNumber').value;
+    const receiver = document.getElementById('receiver').value;
+    const branch = "Abreeza";
+    const customerName = document.getElementById('customerName').value;
+    const dateReceived = document.getElementById('dateBooked').value;
+    const completionDate = document.getElementById('completionDate').value;
+    ticketSection.innerHTML = '';
+
+    const rows = document.querySelectorAll('#itemTable tbody tr');
+    rows.forEach((row, index) => {
+      const ticketNo = row.querySelector('input[name="ticketNo"]').value || `#${index + 1}`;
+const itemDescription = row.querySelector('input[name="itemDescription"]').value || 'N/A';
+      const remarks = row.querySelector('input[name="remarks"]').value || 'No remarks';
+      const price = row.querySelector('input[name="price"]').value || '0.00';
+      const qty = row.querySelector('input[name="quantity"]').value || '1';
+      const repairman = row.querySelector('select[name="repairman"]').value || 'N/A';
+
+      const ticketContent = document.createElement('div');
+      ticketContent.classList.add('ticket-item');
+      ticketContent.innerHTML = `
+        <div style="border:1px solid #333; padding: 1rem; border-radius: 10px;">
+          <h3 style="text-align: center; color: maroon;">Repair Ticket</h3>
+          <p><strong>Job Order No.:</strong> ${jobOrder}</p>
+          <p><strong>Branch:</strong> ${branch}</p>
+          <p><strong>Customer:</strong> ${customerName}</p>
+          <p><strong>Ticket No.:</strong> ${ticketNo}</p>
+<p><strong>Description:</strong> ${itemDescription}</p>
+          <p><strong>Remark:</strong> ${remarks}</p>
+          <p><strong>Qty:</strong> ${qty}</p>
+          <p><strong>Price:</strong> ₱${price}</p>
+          <p><strong>Date Received:</strong> ${dateReceived}</p>
+          <p><strong>Completion Date:</strong> ${completionDate}</p>
+          <p><strong>Receiver:</strong> ${receiver}</p>
+          <p><strong>Repairman Assigned:</strong> ${repairman}</p>
+        </div>
+      `;
+      ticketSection.appendChild(ticketContent);
+    });
+
+    const printWindow = window.open('', '', 'width=800,height=600');
+    printWindow.document.write(`
+      <html>
+      <head>
+        <title>Repair Tickets</title>
+        <style>
+          body { font-family: 'Inter', sans-serif; font-size: 8pt; padding: 20px; margin: 0; }
+          .ticket-item { width: 25%; float: left; margin: 10px; page-break-inside: avoid; }
+          h3 { color: maroon; text-align: center; }
+        </style>
+      </head>
+      <body>${ticketSection.innerHTML}</body>
+      </html>
+    `);
+    printWindow.document.close();
+    printWindow.focus();
+    printWindow.print();
+  });
+});
+const savedOrders = JSON.parse(localStorage.getItem('abreeza_salesOrders') || '[]');
+const customerSet = new Set(savedOrders.map(order => order.customerName));
+const datalist = document.getElementById('customerList');
+
+customerSet.forEach(name => {
+  const option = document.createElement('option');
+  option.value = name;
+  datalist.appendChild(option);
+});
+</script>
+
+</body>
+</html>

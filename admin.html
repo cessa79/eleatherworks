@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome to Admin Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    body, html {
+      height: 100%;
+      background:
+        linear-gradient(rgba(0, 0, 0, 0.9), #ffffff9a, rgba(109, 20, 20, 0.9)),
+        url('bg.png') no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    header {
+      background-color: #800000;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .logo-container img {
+      height: 80px;
+      width: auto;
+    }
+
+    .logo-container h1 {
+      font-size: 2rem;
+      font-weight: 700;
+    }
+
+    .branch-name {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-left: 0.10rem;
+      color: #ffffff;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .nav-buttons a {
+      background-color: #ffffff;
+      color: #800000;
+      padding: 0.6rem 1.3rem;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .nav-buttons a:hover {
+      background: linear-gradient(135deg, #f55a1d 0%, #f5c21d 100%);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .main-content {
+      padding: 4rem 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: calc(100vh - 80px);
+      text-align: center;
+    }
+
+    .main-content h2 {
+      font-size: 2.2rem;
+      color: #800000;
+      margin-bottom: 2rem;
+    }
+
+    .main-content p {
+      font-size: 1.2rem;
+      color: #800000;
+      margin-bottom: 2rem;
+    }
+
+    .button-group {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .button-group a {
+      background-color: #800000;
+      color: white;
+      padding: 1rem;
+      border-radius: 2rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background-color 0.3s ease, transform 0.2s;
+    }
+
+    .button-group a:hover {
+      background: linear-gradient(135deg, #ff0909 0%, #ffd903 100%);
+      transform: scale(1.02);
+    }
+
+    .footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background-color: #800000;
+      color: white;
+      text-align: center;
+      padding: 1rem 0;
+    }
+
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo-container">
+      <img src="logo.png" alt="E-Restore Logo" />
+      <h1>ERestore Leatherworks <span class="branch-name">| Admin Dashboard</span></h1>
+    </div>
+  </header>
+
+  <div class="main-content">
+    <h2>Welcome to E-Restore Leatherworks</h2>
+    <p>Our leatherworks and services are designed to help you restore and preserve your beloved items.</p>
+    
+    <div class="button-group">
+      <a href="admin_salesorder.html">View Sales Orders</a>
+      <a href="admin_salesstatus.html">Check Sales Status</a>
+      <a href="admin_announcement.html">View Announcements</a>
+      <a href="admin_report.html">View Reports</a>
+      <a href="admin_appointment.html">Appointments</a>
+      <a href="admin_customerlist.html">Customer List</a>
+      <a href="admin_attendance.html">Attendance</a>
+      <a href="index.html">Log out</a>
+    </div>
+  </div>
+  <div class="announcement-sidebar" id="announcementSidebar">
+    <button id="dismissAnnouncement" style="position: absolute; top: 0.5rem; right: 0.8rem; background: none; border: none; font-size: 1.2rem; cursor: pointer; color: #7c2100;">✖</button>
+    <h3>Announcement</h3>
+    <ul id="sidebarAnnouncementList"></ul>
+  </div>
+
+  <script>
+    const branch = localStorage.getItem("loggedInBranch");
+
+if ((!branch || branch.toLowerCase() !== "admin") && !window.location.pathname.includes("admin.html")) {
+  window.location.href = "admin.html";
+}
+
+    function logout() {
+      localStorage.removeItem("loggedInBranch");
+      window.location.href = "index.html";
+    }
+
+    const sidebarList = document.getElementById('sidebarAnnouncementList');
+    const sidebarContainer = document.getElementById('announcementSidebar');
+    const sidebarData = JSON.parse(localStorage.getItem('announcements') || '[]');
+
+    if (sidebarData.length > 0) {
+      sidebarData.slice(-5).reverse().forEach(ann => {
+        const li = document.createElement('li');
+        li.textContent = `${ann.date}: ${ann.text}`;
+        sidebarList.appendChild(li);
+      });
+    }
+
+    document.getElementById('dismissAnnouncement').addEventListener('click', () => {
+      sidebarContainer.classList.remove('show');
+      sidebarContainer.style.display = 'none';
+    });
+
+    setTimeout(() => {
+      if (sidebarData.length > 0) {
+        sidebarContainer.style.display = 'block';
+        sidebarContainer.classList.add('show');
+
+        setTimeout(() => {
+          sidebarContainer.classList.remove('show');
+          sidebarContainer.classList.add('fade-out');
+
+          setTimeout(() => {
+            sidebarContainer.style.display = 'none';
+            sidebarContainer.classList.remove('fade-out');
+          }, 2000);
+        }, 15000);
+      }
+    }, 5000); 
+ 
+  </script>
+
+  <div class="footer">
+    <p>© 2025 E-Restore Leatherworks | All Rights Reserved</p>
+  </div>
+</body>
+</html> 

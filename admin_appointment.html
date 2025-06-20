@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Appointments</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <!-- FullCalendar CSS & JS -->
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+
+ <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    body, html {
+      height: 100%;
+      background:
+        linear-gradient(rgba(0, 0, 0, 0.9), #ffffff9a, rgba(109, 20, 20, 0.9)),
+        url('bg.png') no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    header {
+      background-color: #800000;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .logo-container img {
+      height: 80px;
+      width: auto;
+    }
+
+    .logo-container h1 {
+      font-size: 2rem;
+      font-weight: 700;
+    }
+
+    .branch-name {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-left: 0.10rem;
+      color: #ffffff;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .nav-buttons a {
+      background-color: #ffffff;
+      color: #800000;
+      padding: 0.6rem 1.3rem;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .nav-buttons a:hover {
+      background-color: #f5c21d;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .main-content {
+      padding: 3rem;
+    }
+
+    .content-box {
+      background-color: rgb(255, 255, 255);
+      padding: 2rem;
+      border-radius: 2rem;
+      box-shadow: 0 8px 30px rgba(44, 12, 0, 0.3);
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    h2 {
+      text-align: center;
+      color: #800000;
+      margin-bottom: 1.5rem;
+    }
+
+    .action-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+
+    button {
+      background-color: #800000;
+      color: white;
+      padding: 0.7rem 1.2rem;
+      border: none;
+      border-radius: 1rem;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    button:hover {
+      background-color: #660303;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.5rem;
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 0.5rem;
+      text-align: center;
+    }
+
+    .summary {
+      text-align: center;
+      margin-top: 1rem;
+      font-weight: 600;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      max-width: 400px;
+      width: 100%;
+    }
+
+    .modal-content input {
+      width: 100%;
+      margin-bottom: 1rem;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 0.5rem;
+    }
+
+    .modal-content button {
+      width: 100%;
+      background-color: #800000;
+    }
+
+    @media print {
+      .action-buttons, header {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo-container">
+      <img src="logo.png" alt="ERestore Logo">
+      <h1>ERestore Leatherworks <span class="branch-name">| Admin</span></h1>
+    </div>
+    <nav class="nav-buttons">
+      <a href="admin.html">Home</a>
+      <a href="admin_announcement.html">Announcements</a>
+      <a href="admin_reports.html">Reports</a>
+      <a href="admin_appointment.html">Appointments</a>
+      <a href="admin_customerlist.html">Customers</a>
+      <a href="admin_attendance.html">Attendance</a>
+    </nav>
+  </header>
+
+  <div class="main-content">
+    <div class="content-box">
+      <h2>Appointments Management</h2>
+
+      <div class="action-buttons">
+        <button onclick="openModal()">Add Appointment</button>
+        <button onclick="exportToCSV()">Export to CSV</button>
+        <button onclick="window.print()">Print</button>
+      </div>
+
+      <div style="margin-bottom: 1rem; text-align: center;">
+        <input type="text" id="searchInput" placeholder="Search by branch or date" oninput="filterTable()" style="padding: 0.5rem; border-radius: 0.5rem; width: 60%;" />
+      </div>
+
+      <table id="appointmentsTable">
+        <thead>
+          <tr>
+            <th>Branch</th>
+            <th>Date</th>
+            <th>Title</th>
+            <th>Type</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
+      <div class="summary" id="summary"></div>
+    </div>
+  </div>
+
+  <div class="modal" id="appointmentModal">
+    <div class="modal-content">
+      <h3>Add Appointment</h3>
+      <label for="branch">Branch</label>
+      <select id="branch" required>
+        <option value="Bacolod">Bacolod</option>
+        <option value="Abreeza">Abreeza</option>
+        <option value="General Santos">General Santos</option>
+        <option value="Cagayan de Oro">Cagayan de Oro</option>
+      </select>
+      <label for="type">Type</label>
+      <select id="type" required>
+        <option value="completion">Completion Date</option>
+        <option value="due">Due Date</option>
+        <option value="pickup">Pick up</option>
+      </select>
+      <label for="title">Title</label>
+      <input type="text" id="title" required placeholder="e.g. Bag ready for pickup"/>
+      <label for="date">Date</label>
+      <input type="date" id="date" required/>
+      <input type="hidden" id="editingIndex"/>
+      <button type="submit" onclick="submitAppointment()">Save</button>
+    </div>
+
+    <div class="content-box" style="margin-top: 2rem;">
+  <h2>Calendar View</h2>
+  <div id="calendar" style="max-width: 900px; margin: auto;"></div>
+
+</div>
+
+  </div>
+
+  <script>
+    let appointments = [];
+
+const branchKeys = [
+  'gh_appointments',
+  'abreeza_appointments',
+  'bcd_appointments',
+  'cdo_appointments',
+  'gensan_appointments',
+  'Lanang_appointments',
+];
+
+branchKeys.forEach(key => {
+  const branchAppointments = JSON.parse(localStorage.getItem(key) || '[]');
+  appointments = appointments.concat(branchAppointments.map(a => ({ ...a, _branchKey: key })));
+});
+
+    function loadTable() {
+  const tbody = document.querySelector('#appointmentsTable tbody');
+  const summary = document.getElementById('summary');
+  tbody.innerHTML = '';
+
+      appointments.forEach((a, i) => {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${a.branch}</td>
+      <td>${a.date}</td>
+      <td>${a.title}</td>
+      <td>${a.type}</td>
+      <td>
+        <button onclick="editAppointment(${i})">Edit</button>
+        <button onclick="deleteAppointment(${i})">Delete</button>
+      </td>
+    `;
+    tbody.appendChild(row);
+  });
+
+  summary.innerText = `Total Appointments: ${appointments.length}`;
+}
+
+    function closeModal() {
+  document.getElementById('appointmentModal').style.display = 'none';
+}
+
+    function closeModal() {
+      document.getElementById('appointmentModal').style.display = 'none';
+    }
+
+    function submitAppointment() {
+  const branch = document.getElementById('branch').value;
+  const type = document.getElementById('type').value;
+  const title = document.getElementById('title').value;
+  const date = document.getElementById('date').value;
+  const editingIndex = document.getElementById('editingIndex').value;
+
+       const appointment = { branch, type, title, date };
+
+      if (editingIndex !== "") {
+    const oldKey = appointments[editingIndex]._branchKey || 'gh_appointments';
+    const newBranch = document.getElementById('branch').value;
+
+  const branchMap = {
+      'Greenhills': 'gh_appointments',
+      'Abreeza': 'abreeza_appointments',
+      'Bacolod': 'bcd_appointments',
+      'Cagayan de Oro': 'cdo_appointments',
+      'General Santos': 'gensan_appointments',
+      'Lanang': 'lanang_appointments'
+    };
+
+ const newKey = branchMap[newBranch] || oldKey;
+
+
+   if (oldKey !== newKey) {
+      const oldList = JSON.parse(localStorage.getItem(oldKey) || '[]');
+      const oldIndex = editingIndexInOriginal(oldKey, appointments[editingIndex]);
+      if (oldIndex !== -1) {
+        oldList.splice(oldIndex, 1);
+        localStorage.setItem(oldKey, JSON.stringify(oldList));
+      }
+
+      const newList = JSON.parse(localStorage.getItem(newKey) || '[]');
+      newList.push(appointment);
+      localStorage.setItem(newKey, JSON.stringify(newList));
+
+      appointments[editingIndex] = { ...appointment, _branchKey: newKey };
+    } else {
+      const list = JSON.parse(localStorage.getItem(oldKey) || '[]');
+      const idx = editingIndexInOriginal(oldKey, appointments[editingIndex]);
+      if (idx !== -1) {
+        list[idx] = appointment;
+        localStorage.setItem(oldKey, JSON.stringify(list));
+      }
+
+     appointments[editingIndex] = { ...appointment, _branchKey: oldKey };
+    }
+ } else {
+    const branchMap = {
+      'Greenhills': 'gh_appointments',
+      'Abreeza': 'abreeza_appointments',
+      'Bacolod': 'bcd_appointments',
+      'Cagayan de Oro': 'cdo_appointments',
+      'General Santos': 'gensan_appointments',
+      'Lanang': 'lanang_appointments'
+    };
+    const key = branchMap[branch] || 'gh_appointments';
+
+
+const branchData = JSON.parse(localStorage.getItem(key) || '[]');
+    branchData.push(appointment);
+    localStorage.setItem(key, JSON.stringify(branchData));
+    appointments.push({ ...appointment, _branchKey: key });
+  }
+
+      closeModal();
+      loadTable();
+    }
+
+    function editingIndexInOriginal(key, editedAppointment) {
+  const list = JSON.parse(localStorage.getItem(key) || '[]');
+  return list.findIndex(a =>
+    a.branch === editedAppointment.branch &&
+    a.title === editedAppointment.title &&
+    a.date === editedAppointment.date &&
+    a.type === editedAppointment.type
+  );
+}
+
+
+    function editAppointment(i) {
+  const appointment = appointments[i];
+  document.getElementById('branch').value = appointment.branch;
+  document.getElementById('type').value = appointment.type;
+  document.getElementById('title').value = appointment.title;
+  document.getElementById('date').value = appointment.date;
+  document.getElementById('editingIndex').value = i;
+
+  openModal();
+}
+
+    function deleteAppointment(i) {
+  if (confirm("Delete this appointment?")) {
+    const key = appointments[i]._branchKey;
+    const branchData = JSON.parse(localStorage.getItem(key) || '[]');
+
+    const indexInOriginal = editingIndexInOriginal(key, appointments[i]);
+    if (indexInOriginal !== -1) {
+      branchData.splice(indexInOriginal, 1);
+      localStorage.setItem(key, JSON.stringify(branchData));
+    }
+
+    appointments.splice(i, 1);
+    loadTable();
+  }
+}
+
+    
+
+   function exportToCSV() {
+  const header = ["Branch", "Date", "Title", "Type"];
+  const rows = appointments.map(a => [a.branch, a.date, a.title, a.type]);
+  const csv = [header, ...rows].map(e => e.join(',')).join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = "appointments.csv";
+  a.click();
+}
+
+    function filterTable() {
+  const input = document.getElementById('searchInput').value.toLowerCase();
+  const rows = document.querySelectorAll('#appointmentsTable tbody tr');
+  rows.forEach(row => {
+    const text = row.innerText.toLowerCase();
+    row.style.display = text.includes(input) ? '' : 'none';
+  });
+}
+
+document.addEventListener('DOMContentLoaded', loadTable);
+  </script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const calendarEl = document.getElementById('calendar');
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: 'dayGridMonth',
+      headerToolbar: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek,timeGridDay'
+      },
+      events: appointments.map(app => ({
+        title: `${app.branch}: ${app.title}`,
+        start: app.date,
+        backgroundColor: '#800000',
+        borderColor: '#800000'
+      })),
+    });
+
+    calendar.render();
+  });
+</script>
+
+</body>
+</html>

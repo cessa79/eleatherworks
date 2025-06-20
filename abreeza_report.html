@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Submit Report - Abreeza</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
+   <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    body, html {
+      height: 100%;
+      background:
+        linear-gradient(rgba(0, 0, 0, 0.9), #ffffff9a, rgba(109, 20, 20, 0.9)),
+        url('bg.png') no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    header {
+      background-color: #800000;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .logo-container img {
+      height: 80px;
+      width: auto;
+    }
+
+    .logo-container h1 {
+      font-size: 2rem;
+      font-weight: 700;
+    }
+
+    .branch-name {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-left: 0.10rem;
+      color: #ffffff;
+    }
+    .main-content {
+      padding: 2rem;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    h2 {
+      color: #800000;
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    form {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 1rem;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+      margin-bottom: 2rem;
+    }
+
+    label {
+      font-weight: 600;
+      color: #7c2100;
+      display: block;
+      margin: 1rem 0 0.5rem;
+    }
+
+    input[type="text"], input[type="date"], select, textarea {
+      width: 100%;
+      padding: 0.6rem;
+      border-radius: 0.5rem;
+      border: 1px solid #ccc;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    button {
+      margin-top: 1.5rem;
+      padding: 0.6rem 1.5rem;
+      background-color: #800000;
+      color: white;
+      border: none;
+      border-radius: 1rem;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    button:hover { background-color: #630303; }
+
+    .report-list {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 1rem;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    }
+
+    .report-list h3 {
+      color: #f5c21d;
+      margin-bottom: 1rem;
+    }
+
+    .report-entry {
+      padding: 1rem;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .report-entry:last-child { border-bottom: none; }
+
+    .report-meta {
+      font-size: 0.85rem;
+      color: #555;
+    }
+
+    .report-title {
+      font-weight: bold;
+      color: #a64a00;
+      margin-bottom: 0.3rem;
+    }
+
+    .report-category {
+      font-size: 0.85rem;
+      color: #7c2100;
+      font-style: italic;
+    }
+    .nav-buttons {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .nav-buttons a {
+      background-color: #ffffff;
+      color: #800000;
+      padding: 0.6rem 1.3rem;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .nav-buttons a:hover {
+      background-color: #f5c21d;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+  </style>
+</head>
+<body>
+  <header>
+   <div class="logo-container">
+      <img src="logo.png" alt="ERestore Logo" />
+      <h1>ERestore Leatherworks <span class="branch-name">| Abreeza</span></h1>
+    </div>
+    <nav class="nav-buttons">
+      <a href="abreeza.html">Home</a>
+      <a href="abreeza_announcement.html">Announcements</a>
+      <a href="abreeza_report.html">Reports</a>
+      <a href="abreeza_appointment.html">Appointments</a>
+      <a href="abreeza_customerlist.html">Customers</a>
+      <a href="abreeza_attendance.html">Attendance</a>
+    </nav>
+  </header>
+
+  <div class="main-content">
+    <h2>Employee Report Form</h2>
+
+    <form id="reportForm">
+      <label for="reportTitle">Title</label>
+      <input type="text" id="reportTitle" required placeholder="Short title (e.g., Broken machine)"/>
+
+      <label for="reportCategory">Category</label>
+      <select id="reportCategory" required>
+        <option value="">-- Select Category --</option>
+        <option value="Incident">Incident</option>
+        <option value="Maintenance">Maintenance</option>
+        <option value="Customer Concern">Customer Concern</option>
+        <option value="Suggestion">Suggestion</option>
+        <option value="Other">Other</option>
+      </select>
+
+      <label for="reportDate">Date</label>
+      <input type="date" id="reportDate" required />
+
+      <label for="reportDescription">Description</label>
+      <textarea id="reportDescription" required placeholder="Describe what happened or what should be done..."></textarea>
+
+      <label for="reportEmployee">Employee Name (optional)</label>
+      <input type="text" id="reportEmployee" placeholder="Enter your name (optional)" />
+
+      <button type="submit">Submit Report</button>
+    </form>
+  </div>
+
+<script>
+  const form = document.getElementById('reportForm');
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const newReport = {
+      title: document.getElementById('reportTitle').value,
+      category: document.getElementById('reportCategory').value,
+      date: document.getElementById('reportDate').value,
+      description: document.getElementById('reportDescription').value,
+      employee: document.getElementById('reportEmployee').value.trim()
+    };
+
+    const branchKey = 'abreeza_reports';
+    const reports = JSON.parse(localStorage.getItem(branchKey) || '[]');
+    reports.unshift(newReport);
+    localStorage.setItem(branchKey, JSON.stringify(reports));
+
+    // Show confirmation message
+    const message = document.createElement('div');
+    message.textContent = "✅ Report successfully submitted.";
+    message.style.backgroundColor = "#dff0d8";
+    message.style.color = "#3c763d";
+    message.style.padding = "1rem";
+    message.style.borderRadius = "0.75rem";
+    message.style.marginTop = "1rem";
+    message.style.fontWeight = "600";
+    form.parentElement.appendChild(message);
+
+    form.reset();
+
+    message.scrollIntoView({ behavior: 'smooth' });
+  });
+</script>
+
+  </script>
+</body>
+</html>

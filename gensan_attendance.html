@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Employee Attendance - General Santos</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    body, html {
+      height: 100%;
+      background:
+        linear-gradient(rgba(0, 0, 0, 0.9), #ffffff9a, rgba(109, 20, 20, 0.9)),
+        url('bg.png') no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    header {
+      background-color: #800000;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .logo-container img {
+      height: 80px;
+      width: auto;
+    }
+
+    .logo-container h1 {
+      font-size: 2rem;
+      font-weight: 700;
+    }
+
+    .branch-name {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-left: 0.10rem;
+      color: #ffffff;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .nav-buttons a {
+      background-color: #ffffff;
+      color: #800000;
+      padding: 0.6rem 1.3rem;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .nav-buttons a:hover {
+      background: linear-gradient(135deg, #f55a1d 0%, #f5c21d 100%);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .main-content {
+      padding: 3rem;
+    }
+
+    .content-box {
+      background-color: rgb(255, 255, 255);
+      padding: 2rem;
+      border-radius: 2rem;
+      box-shadow: 0 8px 30px rgba(44, 12, 0, 0.3);
+      max-width: 1200px;
+      margin: auto;
+      
+    }
+
+    h2 {
+      text-align: center;
+      color: #800000;
+      margin-bottom: 1.5rem;
+    }
+
+    .action-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+
+    button {
+      background-color: #800000;
+      color: white;
+      padding: 0.7rem 1.2rem;
+      border: none;
+      border-radius: 1rem;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    button:hover {
+      background-color: #660303;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.5rem;
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 0.5rem;
+      text-align: center;
+    }
+
+    .summary {
+      text-align: center;
+      margin-top: 1rem;
+      font-weight: 600;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      max-width: 400px;
+      width: 100%;
+    }
+    
+    .modal-button-group {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.modal-button-group button {
+  flex: 1;
+}
+
+    .modal-content input {
+      width: 100%;
+      margin-bottom: 1rem;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 0.5rem;
+    }
+
+    .modal-content button {
+      width: 100%;
+      background-color: #800000;
+    }
+
+    @media print {
+      .action-buttons, header {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo-container">
+      <img src="logo.png" alt="ERestore Logo" />
+      <h1>ERestore Leatherworks <span class="branch-name">| General Santos</span></h1>
+    </div>
+   <nav class="nav-buttons">
+      <a href="gensan.html">Home</a>
+      <a href="gensan_announcement.html">Announcements</a>
+      <a href="gensan_report.html">Reports</a>
+      <a href="gensan_appointment.html">Appointments</a>
+      <a href="gensan_customerlist.html">Customers</a>
+      <a href="gensan_attendance.html">Attendance</a>
+    </nav>
+  </header>
+
+<div class="main-content">
+  <div class="content-box">
+    <h2>Employee Attendance Tracker</h2>
+
+    <div class="action-buttons">
+      <button onclick="openModal()"> Time In / Time Out</button>
+      <button onclick="openAbsentModal()">Mark Absent</button>
+      <button onclick="exportToCSV()"> Export to CSV</button>
+      <button onclick="window.print()"> Print</button>
+    </div>
+
+    <div style="margin-bottom: 1rem; text-align: center;">
+  <input type="text" id="searchName" list="employeeNames" placeholder="Search by employee name" oninput="filterTable()" style="padding: 0.5rem; border-radius: 0.5rem; width: 40%; margin-right: 1rem;" />
+  
+  <input type="date" id="searchDate" oninput="filterTable()" style="padding: 0.5rem; border-radius: 0.5rem; width: 30%;" />
+
+  <datalist id="employeeNames">
+    <option value="Marisol">
+    <option value="Rizza">
+    <option value="Janette">
+    <option value="Marilyn">
+    <option value="Vivian">
+    <option value="Justine">
+    <option value="Tintin">
+    <option value="Mariel">
+    <option value="Chary">
+    <option value="Red">
+    <option value="Charmagne">
+    <option value="Haika">
+    <option value="Tricia">
+    <option value="Gie Anne">
+    <option value="Rufa Mae">
+    <option value="John Paul">
+    <option value="Edwin Casoy">
+    <option value="Priam Gatela">
+    <option value="Jett Villanueva">
+    <option value="Jomer Sol">
+    <option value="Joekim Alcachupas">
+    <option value="Vicente Rubi">
+    <option value="Joselito Yude">
+    <option value="Randy Rubi">
+    <option value="Charly Carpio">
+    <option value="Edgardo Yude Jr.">
+    <option value="Jericho Casamillo">
+    <option value="Allan Rubi">
+    <option value="Benjie Rubi">
+    <option value="Winlove Baconga">
+    <option value="Ryan Rubi">
+    <option value="Necky Garcia">
+    <option value="Robert Almodel">
+    <option value="Jay Miguel">
+    <option value="Rommel Gutierrez">
+  </datalist>
+</div>
+
+
+    <table id="attendanceTable">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Employee Name</th>
+          <th>Time In</th>
+          <th>Time Out</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <div class="summary" id="summary"></div>
+
+   
+<div style="margin-top: 2rem;">
+  <h3 style="text-align:center; color:#800000; margin-bottom: 1rem;">Calendar View</h3>
+
+  <div style="text-align:center; margin-bottom: 1rem;">
+    <label for="monthSelect">Select Month:</label>
+    <select id="monthSelect" onchange="renderCalendar()"></select>
+  </div>
+
+  <div id="calendarContainer" style="overflow-x:auto;"></div>
+</div>
+
+<!-- TO HERE -->
+
+  </div>
+
+  <!-- Time In/Out Modal -->
+<div class="modal" id="entryModal">
+  <div class="modal-content">
+    <h3>Enter Attendance</h3>
+    <input type="text" id="employeeName" placeholder="Employee Name" required />
+    <input type="time" id="timeIn" />
+    <input type="time" id="timeOut" />
+
+   <div class="modal-button-group">
+  <button onclick="submitEntry()">Submit</button>
+  <button onclick="closeModal()">Cancel</button>
+</div>
+
+  </div>
+</div>
+
+<!-- Mark Absent Modal (moved outside) -->
+<div class="modal" id="absentModal">
+  <div class="modal-content">
+    <h3>Mark Employee Absent</h3>
+    <input type="text" id="absentEmployeeName" placeholder="Employee Name" required />
+   <div class="modal-button-group">
+  <button onclick="submitAbsent()">Submit</button>
+  <button onclick="closeAbsentModal()">Cancel</button>
+</div>
+
+  </div>
+</div>
+
+
+
+  </div>
+
+  <script>
+    function openModal() {
+      document.getElementById('entryModal').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('entryModal').style.display = 'none';
+    }
+
+    function submitEntry() {
+      const name = document.getElementById('employeeName').value.trim();
+      const timeIn = document.getElementById('timeIn').value;
+      const timeOut = document.getElementById('timeOut').value;
+
+      if (!name || (!timeIn && !timeOut)) {
+        alert("Please enter name and at least one time.");
+        return;
+      }
+
+      const today = new Date().toISOString().slice(0, 10);
+      let records = JSON.parse(localStorage.getItem('gensan_attendanceRecords') || '[]');
+
+      const existing = records.find(r => r.name === name && r.date === today);
+      if (existing) {
+        if (timeIn) existing.timeIn = timeIn;
+        if (timeOut) existing.timeOut = timeOut;
+      } else {
+        records.push({ date: today, name, timeIn, timeOut });
+      }
+
+      localStorage.setItem('gensan_attendanceRecords', JSON.stringify(records));
+      closeModal();
+      loadTable();
+    }
+
+    // Load attendance data and render the table
+function loadTable() {
+  const tbody = document.querySelector('#attendanceTable tbody');
+  const summary = document.getElementById('summary');
+  const records = JSON.parse(localStorage.getItem('gensan_attendanceRecords') || '[]');
+  tbody.innerHTML = '';
+
+  let present = 0, absent = 0;
+
+  records.forEach(r => {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${r.date}</td>
+      <td>${r.name}</td>
+      <td>${r.timeIn || '-'}</td>
+      <td>${r.timeOut || '-'}</td>
+    `;
+    if (r.timeIn || r.timeOut) present++;
+    else absent++;
+    tbody.appendChild(row);
+  });
+
+  summary.innerText = `Present: ${present} | Absent: ${absent}`;
+}
+
+
+    function exportToCSV() {
+      const records = JSON.parse(localStorage.getItem('gensan_attendanceRecords') || '[]');
+      if (!records.length) return alert("No records to export.");
+      const header = ["Date", "Employee Name", "Time In", "Time Out"];
+      const rows = records.map(r => [r.date, r.name, r.timeIn || "-", r.timeOut || "-"]);
+      const csv = [header, ...rows].map(e => e.join(',')).join('\n');
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = "attendance.csv";
+      a.click();
+    }
+
+   window.onclick = function(event) {
+  if (event.target === document.getElementById('entryModal')) closeModal();
+  if (event.target === document.getElementById('absentModal')) closeAbsentModal();
+  if (event.target === document.getElementById('dayRecordsModal')) closeDayModal();
+};
+
+function renderCalendar() {
+  const container = document.getElementById('calendarContainer');
+  const select = document.getElementById('monthSelect');
+  const [year, month] = select.value.split('-').map(Number);
+  
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  let table = `<table style="width:100%; border-collapse:collapse; text-align:center;">
+    <tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr><tr>`;
+
+  let dayCount = 0;
+  for (let i = 0; i < firstDay; i++) {
+    table += "<td></td>";
+    dayCount++;
+  }
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+    table += `<td data-date="${dateStr}" onclick="showRecordsForDay('${dateStr}')" style="cursor:pointer; color:#7c2100; font-weight:600;">${d}</td>`;
+    dayCount++;
+    if (dayCount % 7 === 0) table += "</tr><tr>";
+  }
+
+  while (dayCount % 7 !== 0) {
+    table += "<td></td>";
+    dayCount++;
+  }
+
+  table += "</tr></table>";
+  container.innerHTML = table;
+}
+
+
+function populateMonthSelector() {
+  const select = document.getElementById('monthSelect');
+  const start = new Date(2025, 5); // June 2025
+  const end = new Date(2035, 5); // May 2035
+
+  while (start <= end) {
+    const value = `${start.getFullYear()}-${String(start.getMonth()).padStart(2, '0')}`;
+    const label = `${start.toLocaleString('default', { month: 'long' })} ${start.getFullYear()}`;
+    const option = document.createElement('option');
+    option.value = value;
+    option.textContent = label;
+    select.appendChild(option);
+    start.setMonth(start.getMonth() + 1);
+  }
+
+  select.value = "2025-05"; // Default to June 2025
+  renderCalendar();
+}
+
+function showRecordsForDay(dateStr) {
+  const records = JSON.parse(localStorage.getItem('gensan_attendanceRecords') || '[]');
+  const filtered = records.filter(r => r.date === dateStr);
+
+  document.getElementById('modalDate').textContent = dateStr;
+
+  if (filtered.length === 0) {
+    document.getElementById('recordList').innerHTML = "<p>No records found for this date.</p>";
+  } else {
+    const html = filtered.map(r => `
+      <div style="margin-bottom: 0.5rem; padding: 0.5rem; border-bottom: 1px solid #ddd;">
+        <strong>${r.name}</strong><br>
+        Time In: ${r.timeIn || '-'}<br>
+        Time Out: ${r.timeOut || '-'}
+      </div>
+    `).join('');
+    document.getElementById('recordList').innerHTML = html;
+  }
+
+  document.getElementById('dayRecordsModal').style.display = 'flex';
+}
+
+function closeDayModal() {
+  document.getElementById('dayRecordsModal').style.display = 'none';
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  loadTable();
+  populateMonthSelector();
+});
+
+function openAbsentModal() {
+  document.getElementById('absentModal').style.display = 'flex';  // Show modal
+}
+
+// Close the absent modal
+function closeAbsentModal() {
+  document.getElementById('absentModal').style.display = 'none';  // Hide modal
+}
+
+// Submit absent record
+function submitAbsent() {
+  const name = document.getElementById('absentEmployeeName').value.trim();
+  if (!name) {
+    alert("Please enter employee name.");
+    return;
+  }
+
+  const today = new Date().toISOString().slice(0, 10);  // Get today's date in YYYY-MM-DD format
+  let records = JSON.parse(localStorage.getItem('gensan_attendanceRecords') || '[]');
+
+  // Avoid duplicate absent record
+  const existing = records.find(r => r.name === name && r.date === today);
+  if (!existing) {
+    // Add new absent record with empty timeIn and timeOut
+    records.push({ date: today, name, timeIn: '', timeOut: '' });
+    localStorage.setItem('gensan_attendanceRecords', JSON.stringify(records));
+  }
+
+  closeAbsentModal();  // Close the modal after submission
+  loadTable();          // Refresh the attendance table
+}
+
+function filterTable() {
+  const nameFilter = document.getElementById('searchName').value.toLowerCase();
+  const dateFilter = document.getElementById('searchDate').value;
+  const rows = document.querySelectorAll('#attendanceTable tbody tr');
+
+  rows.forEach(row => {
+    const name = row.cells[1].textContent.toLowerCase();
+    const date = row.cells[0].textContent;
+
+    const nameMatch = name.includes(nameFilter);
+    const dateMatch = dateFilter ? date === dateFilter : true;
+
+    if (nameMatch && dateMatch) {
+      row.style.display = '';
+    } else {
+      row.style.display = 'none';
+    }
+  });
+}
+
+  </script>
+  <div class="modal" id="dayRecordsModal">
+  <div class="modal-content">
+    <h3>Records for <span id="modalDate"></span></h3>
+    <div id="recordList"></div>
+    <button onclick="closeDayModal()">Close</button>
+  </div>
+</div>
+
+</body>
+</html>
+

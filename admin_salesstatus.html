@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sales Status - Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
+    body, html { height: 100%; background: linear-gradient(rgba(0, 0, 0, 0.9), #ffffff9a, rgba(109, 20, 20, 0.9)), url('bg.png') no-repeat center center fixed; background-size: cover; }
+
+    header {
+      background-color: #800000; color: white; padding: 1rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .logo-container { display: flex; align-items: center; gap: 2rem; }
+    .logo-container img { height: 80px; width: auto; }
+    .logo-container h1 { font-size: 2rem; font-weight: 700; }
+    .branch-name { font-size: 1.3rem; font-weight: 600; margin-left: 0.10rem; color: #ffffff; }
+
+    .nav-buttons { display: flex; gap: 2rem; flex-wrap: wrap; }
+    .nav-buttons a {
+      background-color: #ffffff; color: #800000; padding: 0.6rem 1.3rem;
+      border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 0.95rem;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .nav-buttons a:hover { background-color: #f5c21d; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); }
+
+    .main-content { padding: 3rem; }
+    h2 { color: #800000; text-align: center; margin-bottom: 1.5rem; }
+    table { width: 100%; border-collapse: collapse; background-color: white; border-radius: 1rem; overflow: hidden; box-shadow: 0 6px 20px rgba(0,0,0,0.2); }
+    th, td { padding: 0.75rem; border: 1px solid #ccc; text-align: center; }
+    th { background-color: #800000; color: white; }
+    select.status-dropdown {
+      padding: 0.3rem 0.5rem;
+      border-radius: 0.5rem;
+      border: 1px solid #ccc;
+    }
+
+    .filter-buttons { text-align: center; margin-bottom: 1rem; }
+    .filter-buttons button {
+      background-color: #800000; color: white; padding: 0.5rem 1rem;
+      border: none; border-radius: 1rem; margin: 0 0.3rem; cursor: pointer; font-weight: 600;
+    }
+    .filter-buttons button:hover { background-color: #a60000; }
+
+    .content-box {
+      background-color: white; padding: 1.5rem; border-radius: 1.5rem;
+      box-shadow: 0 8px 30px rgba(44, 12, 0, 0.3); max-width: 100%; overflow-x: auto; margin: auto;
+    }
+
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo-container">
+      <img src="logo.png" alt="ERestore Logo" />
+      <h1>ERestore Leatherworks <span class="branch-name">| Admin</span></h1>
+    </div>
+    <nav class="nav-buttons">
+      <a href="admin.html">Home</a>
+      <a href="admin_announcement.html">Announcement</a>
+      <a href="admin_appointment.html">Appointment</a>
+      <a href="admin_attendance.html">Attendance</a>
+      <a href="admin_customerlist.html">Customer List</a>
+      <a href="admin_report.html">Report</a>
+      <a href="admin_salesorder.html">Sales Order</a>
+    </nav>
+  </header>
+
+  <div class="main-content">
+    <h2>Sales Status List</h2>
+    <div class="filter-buttons">
+      <button onclick="filterStatus('All')">All</button>
+      <button onclick="filterStatus('In Progress')">In Progress</button>
+      <button onclick="filterStatus('With Balance')">With Balance</button>
+      <button onclick="filterStatus('Finished')">Finished</button>
+    </div>
+    
+    <div class="content-box">
+      <table id="statusTable">
+        <thead>
+          <tr>
+            <th>Branch</th>
+            <th>Order #</th>
+            <th>Customer</th>
+            <th>Date Booked</th>
+            <th>Repairman</th>
+            <th>Items</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+ <script>
+  const tableBody = document.querySelector("#statusTable tbody");
+  let allOrders = [];
+
+  const branchMap = {
+    'gh_salesOrders': 'Greenhills',
+    'abreeza_salesOrders': 'Abreeza',
+    'bcd_salesOrders': 'Bacolod',
+    'cdo_salesOrders': 'Cagayan de Oro',
+    'gensan_salesOrders': 'General Santos',
+    'lanang_salesOrders': 'Lanang'
+  };
+
+  const branchReverseMap = {
+    'Greenhills': 'gh_salesOrders',
+    'Abreeza': 'abreeza_salesOrders',
+    'Bacolod': 'bcd_salesOrders',
+    'Cagayan de Oro': 'cdo_salesOrders',
+    'General Santos': 'gensan_salesOrders',
+    'Lanang': 'lanang_salesOrders'
+  };
+
+  function renderTable(data) {
+    tableBody.innerHTML = "";
+    data.forEach(order => {
+      const items = order.items.map(i =>
+        `• ${i.quantity}x ${i.name} (${i.brand || 'No brand'})${i.remarks ? ' - ' + i.remarks : ''}`
+      ).join("\n");
+
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${order.branch}</td>
+        <td>${order.jobOrderNumber}</td>
+        <td>${order.customerName}</td>
+        <td>${order.dateBooked}</td>
+        <td>${order.repairman || '—'}</td>
+        <td style="white-space: pre-wrap; text-align: left">${items}</td>
+        <td>
+          <select class="status-dropdown" onchange="updateStatus('${order.jobOrderNumber}', this.value)">
+            <option ${order.status === 'In Progress' ? 'selected' : ''}>In Progress</option>
+            <option ${order.status === 'With Balance' ? 'selected' : ''}>With Balance</option>
+            <option ${order.status === 'Finished' ? 'selected' : ''}>Finished</option>
+          </select>
+        </td>
+      `;
+      tableBody.appendChild(row);
+    });
+  }
+
+  function loadOrders() {
+    allOrders = [];
+
+    for (const key in branchMap) {
+      const branchOrders = JSON.parse(localStorage.getItem(key) || '[]');
+      branchOrders.forEach(order => {
+        if (!order.status) order.status = 'In Progress';
+        order.branch = branchMap[key]; 
+        allOrders.push(order);
+      });
+    }
+
+    renderTable(allOrders);
+  }
+
+  function updateStatus(jobOrderNumber, newStatus) {
+    
+    allOrders.forEach(order => {
+      if (order.jobOrderNumber === jobOrderNumber) {
+        order.status = newStatus;
+      }
+    });
+
+   
+    const groupedOrders = {
+      'gh_salesOrders': [],
+      'abreeza_salesOrders': [],
+      'bcd_salesOrders': [],
+      'cdo_salesOrders': [],
+      'gensan_salesOrders': [],
+      'lanang_salesOrders': []
+    };
+
+    allOrders.forEach(order => {
+      const key = branchReverseMap[order.branch];
+      if (groupedOrders[key]) {
+        groupedOrders[key].push(order);
+      }
+    });
+
+    for (const key in groupedOrders) {
+      localStorage.setItem(key, JSON.stringify(groupedOrders[key]));
+    }
+
+    renderTable(allOrders); // Refresh table to reflect new status
+  }
+
+  function filterStatus(status) {
+    if (status === "All") {
+      renderTable(allOrders);
+    } else {
+      renderTable(allOrders.filter(o => o.status === status));
+    }
+  }
+
+  loadOrders();
+</script>
+
+</body>
+</html>

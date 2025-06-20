@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Appointments - General Santos</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    body, html {
+      height: 100%;
+      background:
+        linear-gradient(rgba(0, 0, 0, 0.9), #ffffff9a, rgba(109, 20, 20, 0.9)),
+        url('bg.png') no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    header {
+      background-color: #800000;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .logo-container img {
+      height: 80px;
+      width: auto;
+    }
+
+    .logo-container h1 {
+      font-size: 2rem;
+      font-weight: 700;
+    }
+
+    .branch-name {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-left: 0.10rem;
+      color: #ffffff;
+    }
+    .main-content {
+      padding: 1rem 2%;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      justify-content: space-between;
+    }
+
+    .form-box, .calendar-box {
+      background: white;
+      border-radius: 1rem;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+      padding: 1rem;
+      flex: 1;
+      min-width: 320px;
+    }
+
+    .form-box form label {
+      display: block;
+      margin: 0.6rem 0 0.2rem;
+      font-weight: 600;
+      color: #800000;
+      font-size: 0.9rem;
+    }
+    .form-box form input, .form-box form select {
+      width: 100%;
+      padding: 0.4rem;
+      font-size: 0.85rem;
+      border-radius: 0.4rem;
+      border: 1px solid #ccc;
+    }
+    .form-box form button {
+      margin-top: 1rem;
+      padding: 0.5rem 1.2rem;
+      font-size: 0.85rem;
+      background-color: #800000;
+      color: white;
+      border: none;
+      border-radius: 1rem;
+      cursor: pointer;
+    }
+    .form-box form button:hover {
+      background-color: #a60000;
+    }
+
+    .calendar-header, .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 0.25rem;
+      font-size: 0.85rem;
+    }
+    .calendar-header div {
+      font-weight: 600;
+      text-align: center;
+      color: #7c2100;
+    }
+    .calendar-grid .day {
+      padding: 0.6rem 0;
+      border-radius: 0.5rem;
+      text-align: center;
+      background: #f0f0f0;
+      font-weight: 500;
+    }
+  .highlight-completion { background: #ffa94d !important; color: white !important; }
+.highlight-due { background: #3b82f6 !important; color: white !important; }
+.pickup { background: #00ce33 !important; color: white !important; }
+
+
+
+    .legend {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 0.5rem;
+      font-size: 0.75rem;
+    }
+    .nav-buttons {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .nav-buttons a {
+      background-color: #ffffff;
+      color: #800000;
+      padding: 0.6rem 1.3rem;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .nav-buttons a:hover {
+      background-color: #f5c21d;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .color-box {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+    }
+    .completion { background: #ffa94d; }
+    .due { background: #3b82f6; }
+    .pickup { background: #00ce33; }
+
+    .entries-list {
+      width: 96%;
+      margin: 1rem auto;
+      background: white;
+      border-radius: 1rem;
+      padding: 0.8rem;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    }
+    .entries-list h3 {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+      color: #800000;
+    }
+    .entry {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.3rem 0;
+      font-size: 0.85rem;
+      border-bottom: 1px solid #eee;
+      align-items: center;
+    }
+    .entry:last-child { border-bottom: none; }
+    .entry-buttons button {
+      padding: 0.2rem 0.6rem;
+      border: none;
+      border-radius: 0.5rem;
+      font-size: 0.75rem;
+      cursor: pointer;
+    }
+    .edit-btn { background: #800000; }
+    .delete-btn { background: #800000; color: white; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo-container">
+      <img src="logo.png" alt="E-Restore Logo">
+      <h1>E-Restore Leatherworks <span class="branch-name">| General Santos</span></h1>
+    </div>
+    <nav class="nav-buttons">
+      <a href="gensan.html">Home</a>
+      <a href="gensan_announcement.html">Announcements</a>
+      <a href="gensan_report.html">Reports</a>
+      <a href="gensan_appointment.html">Appointments</a>
+      <a href="gensan_customerlist.html">Customers</a>
+      <a href="gensan_attendance.html">Attendance</a>
+    </nav>
+  </header>
+
+  <div class="main-content">
+    <div class="form-box">
+      <form id="appointmentForm">
+        <label for="type">Type</label>
+        <select id="type" required>
+          <option value="completion">Completion Date</option>
+          <option value="due">Due Date</option>
+          <option value="pickup">Pick up</option>
+        </select>
+        <label for="title">Note / Title</label>
+        <input type="text" id="title" required placeholder="e.g. Bag ready for pickup"/>
+        <label for="date">Date</label>
+        <input type="date" id="date" required/>
+        <input type="hidden" id="editingIndex"/>
+        <button type="submit">Save</button>
+      </form>
+    </div>
+
+    <div class="calendar-box">
+      <div class="calendar-header">
+        <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+      </div>
+      <div class="calendar-grid" id="calendarGrid"></div>
+      <div class="legend">
+        <div><div class="color-box completion"></div> Completion</div>
+        <div><div class="color-box due"></div> Due</div>
+         <div><div class="color-box pickup"></div> Pick up</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="entries-list" id="entriesList">
+    <h3>Scheduled Entries</h3>
+    
+  </div>
+
+  <script>
+    const grid = document.getElementById("calendarGrid");
+    const entriesList = document.getElementById("entriesList");
+    let appointments = JSON.parse(localStorage.getItem("gensan_appointments") || "[]");
+
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth();
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    function buildCalendar() {
+      grid.innerHTML = "";
+      for (let i = 0; i < firstDay; i++) grid.appendChild(document.createElement("div"));
+
+      for (let day = 1; day <= daysInMonth; day++) {
+        const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        const cell = document.createElement("div");
+        cell.className = "day";
+        cell.textContent = day;
+        const match = appointments.find(a => a.date === dateStr);
+        if (match) {
+          cell.title = match.title;
+if (match.type === "completion") {
+  cell.classList.add("highlight-completion");
+} else if (match.type === "due") {
+  cell.classList.add("highlight-due");
+} else if (match.type === "pickup") {
+  cell.classList.add("pickup");
+}
+        }
+        grid.appendChild(cell);
+      }
+    }
+
+    function renderEntries() {
+      entriesList.querySelectorAll(".entry").forEach(e => e.remove());
+      appointments.forEach((a, i) => {
+        const div = document.createElement("div");
+        div.className = "entry";
+        div.innerHTML = `
+          <div><strong>${a.type.toUpperCase()}</strong> - ${a.title} (${a.date})</div>
+          <div>
+            <button class="edit-btn" onclick="editEntry(${i})">Edit</button>
+            <button class="delete-btn" onclick="deleteEntry(${i})">Delete</button>
+          </div>
+        `;
+        entriesList.appendChild(div);
+      });
+    }
+
+    function saveAppointments() {
+      localStorage.setItem("gensan_appointments", JSON.stringify(appointments));
+      buildCalendar();
+      renderEntries();
+    }
+
+    document.getElementById("appointmentForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const type = document.getElementById("type").value;
+      const title = document.getElementById("title").value;
+      const date = document.getElementById("date").value;
+      const editingIndex = document.getElementById("editingIndex").value;
+      const entry = { type, title, date };
+
+      if (editingIndex !== "") {
+        appointments[editingIndex] = entry;
+      } else {
+        appointments.push(entry);
+      }
+      this.reset();
+      document.getElementById("editingIndex").value = "";
+      saveAppointments();
+    });
+
+    function editEntry(i) {
+      const a = appointments[i];
+      document.getElementById("type").value = a.type;
+      document.getElementById("title").value = a.title;
+      document.getElementById("date").value = a.date;
+      document.getElementById("editingIndex").value = i;
+    }
+
+    function deleteEntry(i) {
+      if (confirm("Delete this entry?")) {
+        appointments.splice(i, 1);
+        saveAppointments();
+      }
+    }
+
+    buildCalendar();
+    renderEntries();
+  </script>
+</body>
+</html>
